@@ -19,7 +19,7 @@ Yuki Endo: "User-Controllable Latent Transformer for StyleGAN Image Layout Editi
 Download and decompress <a href="https://drive.google.com/file/d/1lBL_J-uROvqZ0BYu9gmEcMCNyaPo9cBY/view?usp=sharing">our pre-trained models</a>.
 
 ## Inference with our pre-trained models
-<img src="docs/thumb.gif" width="150px"/><br>
+<img src="docs/thumb.gif" width="150px"/><img src="docs/car.gif" width="150px"/><img src="docs/church.gif" width="150px"/><img src="docs/ffhq.gif" width="150px"/><img src="docs/anime.gif" width="150px"/><br>
 We provide an interactive interface based on Flask. This interface can be locally launched with
 ```
 python interface/flask_app.py --checkpoint_path=pretrained_models/latent_transformer/cat.pt
