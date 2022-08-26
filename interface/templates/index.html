@@ -1,0 +1,195 @@
+﻿<html>
+<head>
+<meta charset="utf-8">
+
+</head>
+    <body>
+    <center>
+        <table><tr>
+        <td>
+        <canvas id="canvas" width="256" height="256" style="border: solid 1px #000;box-sizing: border-box;"></canvas>
+	</td>
+	<td>
+	<form action="./" method="POST" id="init_id">
+           <input type = "submit" value="Initialize">
+        </form>
+	<label><input type="checkbox" id="show_anchors" checked>Show anchor points</label>
+        </td>
+        </tr></table>
+	<table border="1">
+	<tr><td>Mouse drag:</td><td>Translation</td></tr>
+	<tr><td>Middle mouse button:</td><td>Set anchor point</td></tr>
+	<tr><td>Mouse wheel:</td><td>Zoom in & out</td></tr>
+	<tr><td>'i' or 'o' key + mouse drag:</td><td>Translation with zooming in & out</td></tr>
+	<tr><td>'s' key:</td><td>style mixing</td></tr>
+	</table>	
+    </center>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+    // Canvas
+    var cnvs = document.getElementById('canvas');
+    var ctx = cnvs.getContext('2d');
+
+    // Define variables
+    const cnvWidth = 256;
+    const cnvHeight = 256;
+    var clickFlg = 0;
+    var bgColor = "rgb(0,0,0)";
+    var img_base64 = {{canvas_img|tojson}};
+    var sx0, sy0, sx, sy;
+　　var dz = 0;
+    var stop_points = [];
+    var mouse_button;
+    var zoom_in = 0;
+    var zoom_out = 0;
+    var show_anchors = document.getElementById('show_anchors');
+    show_anchors.addEventListener('change', e => {
+        draw_image_on_canvas(img_base64);
+    });
+
+    setBgColor();
+
+    function draw_image_on_canvas(img_base64){
+      if(img_base64.length!=0){
+        var img = new Image();
+        img.src = img_base64;
+	ctx.drawImage(img, 0, 0, 256, 256);
+        img.onload = function(){
+            ctx.drawImage(img, 0, 0, 256, 256);
+	    draw_points_on_canvas();
+        }
+      }
+    }
+
+    function draw_points_on_canvas(){
+        if(show_anchors.checked){
+		stop_points.forEach(function(value){
+	          ctx.beginPath();
+	          ctx.arc( value[0], value[1], 5, 0 * Math.PI / 180, 360 * Math.PI / 180, false );
+	          ctx.fillStyle = "rgb(135,206,235)";
+	          ctx.fill();
+	          ctx.strokeStyle = "rgb(128,128,128)";
+	          ctx.lineWidth = 2;
+	          ctx.stroke();
+	        });
+	}
+    }
+
+    draw_image_on_canvas(img_base64);
+
+    // Events on canva
+    $("#canvas").mousedown(function(e){
+      clickFlg = 1;
+      sx0 = e.offsetX;
+      sy0 = e.offsetY;
+      sx = e.offsetX;
+      sy = e.offsetY;
+      mouse_button = e.button;
+      if(mouse_button==1){
+	  show_anchors.checked = 1;
+	  let rad = 5;
+	  let filtered_points = stop_points.filter((pt)=>{
+	  return((pt[0]-sx)*(pt[0]-sx)+(pt[1]-sy)*(pt[1]-sy)>rad*rad);
+	  });
+	  if(filtered_points.length<stop_points.length){
+	    stop_points = filtered_points;
+	  }else{
+            stop_points.push([sx,sy]);
+	  }
+	  draw_image_on_canvas(img_base64);
+      }
+    }).mouseup(function(){
+      clickFlg = 0;
+    }).mousemove(function(e){
+      if(!clickFlg) return false;
+      //draw(e.offsetX, e.offsetY);
+      if(mouse_button==0){
+      show_anchors.checked = 0;
+      var ex = e.offsetX;
+      var ey = e.offsetY;
+      var dx0 = ex-sx0;
+      var dy0 = ey-sy0;
+      var dx = ex-sx;
+      var dy = ey-sy;
+      if(Math.sqrt(dx0*dx0+dy0*dy0)>5){
+          $.post("/translate", {dx:dx,dy:dy,dz:dz,sx:sx,sy:sy,stop_points:JSON.stringify(stop_points),zi:zoom_in,zo:zoom_out}).done(function(data) {
+             img_base64 = $.parseJSON(data).img;
+	     draw_image_on_canvas(img_base64);
+           })
+          sx0 = ex;
+          sy0 = ey;
+          //sx = ex;
+          //sy = ey;
+        }
+      }
+    });
+
+    cnvs.addEventListener('wheel', (e) => {
+	show_anchors.checked = 0;
+	sx = e.offsetX;
+	sy = e.offsetY;
+        if(e.deltaY<0){
+	  dz -= 1;
+	}else{
+	  dz += 1;
+	}
+	$.post("/zoom", {dz:dz,sx:sx,sy:sy,stop_points:JSON.stringify(stop_points)}).done(function(data) {
+             img_base64 = $.parseJSON(data).img;
+	     draw_image_on_canvas(img_base64);
+           })
+    });
+
+    document.addEventListener('keydown', e => {
+	if(e.key=="s"){
+	    $.post("/changestyle").done(function(data) {
+             img_base64 = $.parseJSON(data).img;
+	     stop_points = [];
+	     dz = 0;
+	     draw_image_on_canvas(img_base64);
+            })
+	}
+	if(e.key=="r"){
+	    $.post("/reset").done(function(data) {
+             img_base64 = $.parseJSON(data).img;
+	     stop_points = [];
+	     dz = 0;
+	     draw_image_on_canvas(img_base64);
+            })
+	}
+	if(e.key=="i"){
+	    zoom_in = 1;
+	}
+	if(e.key=="o"){
+	    zoom_out = 1;
+	}
+    });
+
+    document.addEventListener('keyup', e => {
+	if(e.key=="i"){
+	    zoom_in = 0;
+	}
+	if(e.key=="o"){
+	    zoom_out = 0;
+	}
+    });
+
+
+    function setBgColor(){
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0,0,cnvWidth,cnvHeight);
+    }
+
+    document.getElementById('init-id').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var form = this;
+        var base64 = cnvs.toDataURL();
+        var newInput = document.createElement("input");
+        newInput.type="hidden";
+        newInput.name = "canvas";
+        newInput.value=base64;
+        form.appendChild(newInput); 
+        form.submit(); 
+    }, false);
+    </script>
+</body>
+</html>
