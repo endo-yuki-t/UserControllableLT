@@ -1,5 +1,5 @@
 # User-Controllable Latent Transformer for StyleGAN Image Layout Editing
-  <!--a href="https://arxiv.org/abs/2103.14877"><img src="https://img.shields.io/badge/arXiv-2103.14877-b31b1b.svg"></a-->
+  <a href="https://arxiv.org/abs/2208.12408"><img src="https://img.shields.io/badge/arXiv-2208.12408-b31b1b.svg"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
 <p align="center">
 <img src="docs/teaser.jpg" width="800px"/>
@@ -7,7 +7,7 @@
 
 This repository contains our implementation of the following paper:
 
-Yuki Endo: "User-Controllable Latent Transformer for StyleGAN Image Layout Editing," Computer Graphpics Forum (Pacific Graphics 2022) [[Project](http://www.cgg.cs.tsukuba.ac.jp/~endo/projects/UserControllableLT)] [[PDF (preprint)]()]
+Yuki Endo: "User-Controllable Latent Transformer for StyleGAN Image Layout Editing," Computer Graphpics Forum (Pacific Graphics 2022) [[Project](http://www.cgg.cs.tsukuba.ac.jp/~endo/projects/UserControllableLT)] [[PDF (preprint)](http://arxiv.org/abs/2208.12408)]
 
 ## Prerequisites  
 1. Python 3.8
