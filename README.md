@@ -31,6 +31,7 @@ The latent transformer can be trained with
 ```
 python scripts/train.py --exp_dir=results --stylegan_weights=pretrained_models/stylegan2-cat-config-f.pt
 ```
+To perform training with your dataset, you need first to train StyleGAN2 on your dataset using [rosinality's code](https://github.com/rosinality/stylegan2-pytorch) and then run the above script with specifying the trained weights. 
 
 ## Citation
 Please cite our paper if you find the code useful:

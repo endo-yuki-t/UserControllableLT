@@ -28,14 +28,17 @@ class StyleGANControler(nn.Module):
 			self.style_num = 14
 		elif 'anime' in self.opts.stylegan_weights:
 			self.style_num = 16
+		else:
+			self.style_num = 18 #Please modify to adjust network architecture to your pre-trained StyleGAN2
 		
 		self.encoder = self.set_encoder()
 		if self.style_num==18:
-			self.decoder = Generator(1024, 512, 8, channel_multiplier=2)
+			self.decoder = Generator(1024, 512, 8, channel_multiplier=2) 
 		elif self.style_num==16:
 			self.decoder = Generator(512, 512, 8, channel_multiplier=2)
 		elif self.style_num==14:
 			self.decoder = Generator(256, 512, 8, channel_multiplier=2)
+			
 		self.face_pool = torch.nn.AdaptiveAvgPool2d((256, 256))
 		
 		# Load weights if needed
