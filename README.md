@@ -40,10 +40,10 @@ Please cite our paper if you find the code useful:
 Title = {User-Controllable Latent Transformer for StyleGAN Image Layout Editing},
 Author = {Yuki Endo},
 Journal = {Computer Graphics Forum},
-volume = {},
-number = {},
-pages = {},
-doi = {},
+volume = {41},
+number = {7},
+pages = {395-406},
+doi = {10.1111/cgf.14686},
 Year = {2022}
 }
 ```
