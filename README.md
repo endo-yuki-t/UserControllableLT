@@ -33,6 +33,9 @@ python scripts/train.py --exp_dir=results --stylegan_weights=pretrained_models/s
 ```
 To perform training with your dataset, you need first to train StyleGAN2 on your dataset using [rosinality's code](https://github.com/rosinality/stylegan2-pytorch) and then run the above script with specifying the trained weights. 
 
+## Link
+[Gradio demo](https://huggingface.co/spaces/radames/UserControllableLT-Latent-Transformer) by Radam&#233;s Ajna
+
 ## Citation
 Please cite our paper if you find the code useful:
 ```
