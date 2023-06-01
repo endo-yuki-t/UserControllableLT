@@ -1,6 +1,9 @@
 # User-Controllable Latent Transformer for StyleGAN Image Layout Editing
   <a href="https://arxiv.org/abs/2208.12408"><img src="https://img.shields.io/badge/arXiv-2208.12408-b31b1b.svg"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+  <a href="https://huggingface.co/spaces/radames/UserControllableLT-Latent-Transformer" target="_blank">
+    <img src="https://img.shields.io/badge/%F0%9F%A4%97-Open%20in%20Spaces-blue" alt="Open in Huggingface">
+  </a>
 <p align="center">
 <img src="docs/teaser.jpg" width="800px"/>
 </p>
@@ -17,6 +20,12 @@ Yuki Endo: "User-Controllable Latent Transformer for StyleGAN Image Layout Editi
 
 ## Preparation
 Download and decompress <a href="https://drive.google.com/file/d/1lBL_J-uROvqZ0BYu9gmEcMCNyaPo9cBY/view?usp=sharing">our pre-trained models</a>.
+
+  Or you can dowload it from [Hugging Face hub](https://huggingface.co/radames/UserControllableLT)
+
+```bash
+git clone https://huggingface.co/radames/UserControllableLT pretrained_models
+```
 
 ## Inference with our pre-trained models
 <img src="docs/thumb.gif" width="150px"/><img src="docs/car.gif" width="150px"/><img src="docs/church.gif" width="150px"/><img src="docs/ffhq.gif" width="150px"/><img src="docs/anime.gif" width="150px"/><br>
